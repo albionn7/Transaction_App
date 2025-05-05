@@ -1,12 +1,38 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-export const Sidebar = () => {
+export const Sidebar = ({ closeMenu }) => {
   return (
-    <div className="flex flex-row h-auto align-middle items-center justify-center ">
-      <ul className="flex flex-col gap-10 text-md">
-        <li>Home</li>
-        <li>Create New Transaction</li>
-        <li>Login/SignUp</li>
+    <div className="flex flex-col w-full bg-teal-500 p-6 rounded-xl shadow-lg h-full">
+      <ul className="flex flex-col gap-6 text-lg">
+        <li>
+          <Link
+            to="/"
+            className="text-white hover:text-teal-200 transition-colors duration-200"
+            onClick={closeMenu}
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/create"
+            className="text-white hover:text-teal-200 transition-colors duration-200"
+            onClick={closeMenu}
+          >
+            Create Transaction
+          </Link>
+        </li>
+
+        <li>
+          <Link
+            to=""
+            className="text-white hover:text-teal-200 transition-colors duration-200"
+            onClick={closeMenu}
+          >
+            Login/SignUp
+          </Link>
+        </li>
       </ul>
     </div>
   );
