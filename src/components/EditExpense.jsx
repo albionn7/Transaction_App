@@ -1,36 +1,32 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useContext, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionProvider.jsx";
-import { useNavigate } from "react-router-dom";
 
-export const CreateTransaction = () => {
-  const { addTransaction, isLoggedIn } = useContext(TransactionContext);
+export const EditExpense = () => {
+  const { id } = useParams();
+  const { transactions, categories } = useContext(TransactionContext);
+
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/categories")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Couldn't fetch expenses");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      })
-
-      .catch((err) => {
-        console.error("Fetch error:", err.message);
-      });
-  }, []);
-  console.log(categories);
-
   const [form, setForm] = useState({
     transactionDate: "",
     value: "",
     categoryId: "",
     title: "",
   });
+
+  useEffect(() => {
+    const expense = transactions.find((expense) => expense.id === parseInt(id));
+    if (expense) {
+      setForm({
+        transactionDate: expense.transactionDate,
+        value: expense.value,
+        categoryId: expense.category.id,
+        title: expense.title,
+      });
+    } else {
+      alert("Could not find the transaction");
+    }
+  }, [id, transactions]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -39,39 +35,33 @@ export const CreateTransaction = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !form.transactionDate ||
-      !form.value ||
-      !form.categoryId ||
-      !form.title
-    ) {
-      alert("Please fill all fields");
-      return;
-    }
-
-    if (isLoggedIn) {
-      addTransaction(form);
-    } else {
-      alert("You have to be logged in to add expenses");
-    }
-    setForm({
-      transactionDate: "",
-      value: "",
-      categoryId: "",
-      title: "",
+    const res = await fetch(`http://localhost:8080/api/expenses/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(form),
     });
-    navigate("/");
+    if (res.ok) {
+      alert("You just modified this expense");
+      navigate("/");
+      navigate(0);
+    } else {
+      alert("something went wrong, you can't edit");
+    }
   };
-
   return (
-    <div className="flex w-full text-gray-900">
+    <>
+      <h1 className="py-20 text-center text-3xl font-bold tracking-tight text-gray-700">
+        Edit This Expense
+      </h1>
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col max-w-sm w-full mx-auto gap-4"
+        className="flex flex-col gap-4 max-w-sm mx-auto"
       >
         <label>Title</label>
         <input
@@ -89,24 +79,23 @@ export const CreateTransaction = () => {
           onChange={handleChange}
           className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:border-blue-500 block w-full p-2.5"
         >
-          <option value="">Select a category</option>
+          <option value="categoryId">Select a category</option>
           {categories.map((category) => (
             <option value={category.id} key={category.id}>
               {category.name}
             </option>
           ))}
         </select>
-
         <label>Amount</label>
         <input
           type="number"
           name="value"
           value={form.value}
           onChange={handleChange}
-          className="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:border-blue-500 block w-full p-2.5"
+          className="bg-gray-50 border border-gray-300 text-sm rounded-lg  focus:border-blue-500 block w-full p-2.5"
         />
 
-        <label>Transaction Date</label>
+        <label>Date</label>
         <input
           type="date"
           name="transactionDate"
@@ -117,11 +106,11 @@ export const CreateTransaction = () => {
 
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center"
+          className="bg-blue-600 text-white py-2 rounded-xl"
         >
-          Create Transaction
+          Update Transaction
         </button>
       </form>
-    </div>
+    </>
   );
 };
