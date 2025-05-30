@@ -1,29 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { TransactionContext } from "../context/TransactionProvider.jsx";
 import { useNavigate } from "react-router-dom";
+import { CategoriesContext } from "../context/CategoriesProvider.jsx";
 
 export const CreateTransaction = () => {
   const { addTransaction, isLoggedIn } = useContext(TransactionContext);
+  const { categories } = useContext(CategoriesContext);
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    fetch("http://localhost:8080/api/categories")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Couldn't fetch expenses");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      })
-
-      .catch((err) => {
-        console.error("Fetch error:", err.message);
-      });
-  }, []);
-  console.log(categories);
 
   const [form, setForm] = useState({
     transactionDate: "",

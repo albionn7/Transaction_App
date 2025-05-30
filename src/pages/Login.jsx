@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionProvider.jsx";
-import { Logout } from "./Sidebar.jsx";
+import { Logout } from "./Logout.jsx";
 
 export const Login = () => {
   const { setIsLoggedIn, isLoggedIn } = useContext(TransactionContext);
@@ -36,7 +36,6 @@ export const Login = () => {
       });
 
       const data = await response.json();
-      console.log(data);
       if (!response.ok) {
         const message = data.message || "Login failed";
         alert(message);
@@ -91,14 +90,6 @@ export const Login = () => {
                   >
                     Password
                   </label>
-                  <div className="text-sm">
-                    <a
-                      href="#"
-                      className="font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      Forgot password?
-                    </a>
-                  </div>
                 </div>
                 <div className="mt-2">
                   <input

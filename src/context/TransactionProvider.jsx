@@ -3,7 +3,6 @@ const TransactionContext = createContext();
 
 export const TransactionProvider = ({ children }) => {
   const [transactions, setTransactions] = useState([]);
-  const [categories, setCategories] = useState([]);
 
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return localStorage.getItem("isLoggedIn") === "true";
@@ -18,23 +17,6 @@ export const TransactionProvider = ({ children }) => {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/categories")
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Couldn't fetch expenses");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCategories(data);
-      })
-
-      .catch((err) => {
-        console.error("Fetch error:", err.message);
-      });
-  }, []);
-
-  useEffect(() => {
     fetch("http://localhost:8080/api/expenses")
       .then((res) => {
         if (!res.ok) {
@@ -44,18 +26,13 @@ export const TransactionProvider = ({ children }) => {
       })
       .then((data) => {
         setTransactions(data);
-        console.log(data);
       })
       .catch((err) => {
         console.error("Fetch error:", err.message);
       });
   }, []);
 
-  console.log(transactions);
-
   const addTransaction = async (transaction) => {
-    console.log(transaction);
-
     try {
       const response = await fetch("http://localhost:8080/api/expenses", {
         method: "POST",
@@ -83,7 +60,6 @@ export const TransactionProvider = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
         setTransactions,
-        categories,
       }}
     >
       {children}

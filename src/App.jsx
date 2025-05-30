@@ -1,10 +1,11 @@
-import { Home } from "./components/Home";
+import { Home } from "./pages/Home.jsx";
+import { Login } from "./pages/Login.jsx";
+import { Signup } from "./pages/Signup.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { RootLayout } from "./components/RootLayout.jsx";
 import { CreateTransaction } from "./components/CreateTransaction.jsx";
-import { Login } from "./components/Login.jsx";
-import { Signup } from "./components/Signup.jsx";
 import { EditExpense } from "./components/EditExpense.jsx";
+import { ProtectedRoutes } from "./utils/ProtectedRoutes.jsx";
+import { RootLayout } from "./layout/RootLayout.jsx";
 
 const router = createBrowserRouter([
   {
@@ -12,10 +13,24 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     children: [
       { index: true, element: <Home /> },
-      { path: "create", element: <CreateTransaction /> },
+      {
+        path: "create",
+        element: (
+          <ProtectedRoutes>
+            <CreateTransaction />
+          </ProtectedRoutes>
+        ),
+      },
       { path: "/login", element: <Login /> },
       { path: "/signup", element: <Signup /> },
-      { path: "/edit/:id", element: <EditExpense /> },
+      {
+        path: "/edit/:id",
+        element: (
+          <ProtectedRoutes>
+            <EditExpense />
+          </ProtectedRoutes>
+        ),
+      },
     ],
   },
 ]);

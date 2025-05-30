@@ -1,12 +1,14 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionProvider.jsx";
+import { CategoriesContext } from "../context/CategoriesProvider.jsx";
 
 export const EditExpense = () => {
   const { id } = useParams();
-  const { transactions, categories } = useContext(TransactionContext);
-
+  const { transactions } = useContext(TransactionContext);
+  const { categories } = useContext(CategoriesContext);
   const navigate = useNavigate();
+
   const [form, setForm] = useState({
     transactionDate: "",
     value: "",

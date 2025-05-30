@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { TransactionContext } from "../context/TransactionProvider";
-import { Transaction } from "./Transaction";
+import { Transaction } from "../components/Transaction";
 export const Home = () => {
   const { transactions } = useContext(TransactionContext);
 

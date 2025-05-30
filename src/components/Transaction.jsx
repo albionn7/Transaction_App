@@ -15,12 +15,12 @@ export const Transaction = ({ title, category, id, value, createdAt }) => {
     });
   };
   return (
-    <div className="flex flex-col  items-start justify-items-start p-10 md:w-3290px] md:h-[350px]  gap-2  bg-amber-500  rounded-2xl">
+    <div className="flex flex-col  items-start justify-items-start p-10 md:w-[320px] md:h-[370px]  gap-2  bg-amber-500  rounded-2xl">
       <h2 className="flex text-xl pb-10  font-bold ">Title: {title}</h2>
-      <div className="flex flex-wrap md:flex-col  items-start md:h-[250px] gap-2 ">
+      <div className="flex flex-wrap md:flex-col  items-start md:h-[250px] gap-4 ">
         <p className="text-lg text-center">Category: {category.name}</p>
         <p className="text-lg text-center">Price: {value}</p>
-        <p className="text-lg text-center">Date: {createdAt}</p>
+        <p className="text-lg text-start ">Date: {createdAt}</p>
       </div>
       {isLoggedIn && (
         <div className="flex justify-center items-center gap-3 mt-5 ">
@@ -32,7 +32,7 @@ export const Transaction = ({ title, category, id, value, createdAt }) => {
           </Link>
           <button
             onClick={handleDelete}
-            className="bg-red-500 text-white font-bold py-2 px-4 rounded-xl  hover:bg-red-700"
+            className="bg-red-500 text-white font-bold py-2 px-4 rounded-xl cursor-pointer hover:bg-red-700"
           >
             Delete
           </button>
