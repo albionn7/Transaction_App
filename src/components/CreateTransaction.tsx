@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import { TransactionContext } from "../context/TransactionProvider.jsx";
+import React, { useState } from "react";
+import { useTransaction } from "../context/TransactionProvider";
 import { useNavigate } from "react-router-dom";
-import { CategoriesContext } from "../context/CategoriesProvider.jsx";
+import { useCategories } from "../context/CategoriesProvider";
 
 export const CreateTransaction = () => {
-  const { addTransaction, isLoggedIn } = useContext(TransactionContext);
-  const { categories } = useContext(CategoriesContext);
+  const { addTransaction, isLoggedIn } = useTransaction();
+  const { categories } = useCategories();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -15,7 +15,9 @@ export const CreateTransaction = () => {
     title: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange: React.ChangeEventHandler<
+    HTMLInputElement | HTMLSelectElement
+  > = (e) => {
     e.preventDefault();
     setForm({
       ...form,
@@ -23,7 +25,7 @@ export const CreateTransaction = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
     if (

@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { TransactionContext } from "../context/TransactionProvider.jsx";
-import { CategoriesContext } from "../context/CategoriesProvider.jsx";
+import { CategoriesContext } from "../context/CategoriesProvider";
 
 export const EditExpense = () => {
   const { id } = useParams();

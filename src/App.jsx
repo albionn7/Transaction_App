@@ -1,11 +1,11 @@
-import { Home } from "./pages/Home.jsx";
+import { Home } from "./pages/Home";
 import { Login } from "./pages/Login.jsx";
 import { Signup } from "./pages/Signup.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { CreateTransaction } from "./components/CreateTransaction.jsx";
-import { EditExpense } from "./components/EditExpense.jsx";
-import { ProtectedRoutes } from "./utils/ProtectedRoutes.jsx";
-import { RootLayout } from "./layout/RootLayout.jsx";
+import { CreateTransaction } from "./components/CreateTransaction";
+import { EditExpense } from "./components/EditExpense";
+import { ProtectedRoutes } from "./utils/ProtectedRoutes";
+import { RootLayout } from "./layout/RootLayout";
 
 const router = createBrowserRouter([
   {

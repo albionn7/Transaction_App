@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
-import { TransactionContext } from "../context/TransactionProvider";
+import React from "react";
+import { useTransaction } from "../context/TransactionProvider";
 import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 export const Transaction = ({ title, category, id, value, createdAt }) => {
-  const { setTransactions, isLoggedIn } = useContext(TransactionContext);
+  const { setTransactions, isLoggedIn } = useTransaction();
   const handleDelete = () => {
     fetch("http://localhost:8080/api/expenses/" + id, {
       method: "DELETE",
@@ -19,8 +20,10 @@ export const Transaction = ({ title, category, id, value, createdAt }) => {
       <h2 className="flex text-xl pb-10  font-bold ">Title: {title}</h2>
       <div className="flex flex-wrap md:flex-col  items-start md:h-[250px] gap-4 ">
         <p className="text-lg text-center">Category: {category.name}</p>
-        <p className="text-lg text-center">Price: {value}</p>
-        <p className="text-lg text-start ">Date: {createdAt}</p>
+        <p className="text-lg text-center">Price: ${value}.00</p>
+        <p className="text-lg text-start ">
+          Date: {format(createdAt, "MMMM do, yyyy")}
+        </p>
       </div>
       {isLoggedIn && (
         <div className="flex justify-center items-center gap-3 mt-5 ">

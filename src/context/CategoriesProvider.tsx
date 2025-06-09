@@ -1,9 +1,25 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-const CategoriesContext = createContext();
+interface CategoryTypes {
+  id: number;
+  name: string;
+}
+
+const CategoriesContext = createContext<{
+  categories: CategoryTypes[];
+  [x: string]: any;
+} | null>(null);
+
+export function useCategories() {
+  const ctx = useContext(CategoriesContext);
+  if (!ctx) {
+    throw new Error("you forgot to wrap component with <CategoriesProvider/>");
+  }
+  return ctx;
+}
 
 export const CategoriesProvider = ({ children }) => {
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<CategoryTypes[]>([]);
 
   useEffect(() => {
     fetch("http://localhost:8080/api/categories")
