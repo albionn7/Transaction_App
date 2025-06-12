@@ -7,4 +7,15 @@ module.exports = {
     "\\.(css|less)$": "identity-obj-proxy",
   },
   verbose: true,
+
+  // ✅ Add these lines:
+  collectCoverage: true,
+  coverageDirectory: "coverage",
+  coverageReporters: ["text", "lcov"],
+  collectCoverageFrom: [
+    "src/**/*.{js,jsx,ts,tsx}",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+    "!**/index.{js,jsx,ts,tsx}", // optionally exclude entrypoints
+  ],
 };

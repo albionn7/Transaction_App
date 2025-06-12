@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useTransaction } from "../context/TransactionProvider";
 import { Transaction } from "../components/Transaction";
 import { SearchBar } from "../components/SearchBar";
@@ -9,10 +9,10 @@ export const Home = () => {
   const [searchedTask, setSearchedTask] = useState("");
   const { transactions } = useTransaction();
 
-  const filteredTask = transactions.filter((t) =>
+  const searchedTasks = transactions.filter((t) =>
     t.title.toLowerCase().includes(searchedTask.toLowerCase())
   );
-  const soartedTaksks = [...filteredTask].sort((a, b) => {
+  const displayedTasks = searchedTasks.sort((a, b) => {
     if (sorting === "highest") return Number(b.value) - Number(a.value);
     if (sorting === "lowest") return Number(a.value) - Number(b.value);
     if (sorting === "latest")
@@ -21,18 +21,20 @@ export const Home = () => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     return 0;
   });
-  console.log(soartedTaksks);
-  const getTotalValue = () => {
-    let totalAmount = 0;
-    soartedTaksks.map((item) => {
-      totalAmount += parseInt(item.value);
-    });
-    if (totalAmount === 0) {
-      return <div>Total Amount: $0.00</div>;
-    } else {
-      return <div>Total Amount: ${totalAmount}.00</div>;
-    }
-  };
+  console.log(displayedTasks);
+
+  const totalAverage = useMemo(() => {
+    if (displayedTasks.length === 0) return 0;
+    const totalAmount = displayedTasks.reduce((sum, item) => {
+      if (displayedTasks.length === 0) return 0;
+      const value = parseFloat(item.value);
+
+      return isNaN(value) ? sum : sum + value;
+    }, 0);
+
+    return displayedTasks.length > 0 ? totalAmount / displayedTasks.length : 0;
+  }, [displayedTasks]);
+
   return (
     <>
       <div className="flex md:w-3/5 flex-col md:flex-row   md:justify-start justify-center  items-center  md:ml-4 md:gap-10  bg-gray-300 md:rounded-full rounded-2xl py-3 md:py-0 ">
@@ -41,15 +43,18 @@ export const Home = () => {
           setSearchedTask={setSearchedTask}
         />
         <SortingDropDown sorting={sorting} setSorting={setSorting} />
-        <div>{getTotalValue()}</div>
+        <div>
+          <label>Average Cost: $</label>
+          {totalAverage}
+        </div>
       </div>
       hello
       <main className="flex flex-wrap  ml-0  p-6 overflow-x-auto overflow-y-auto x-auto">
         <div className="flex flex-wrap md:flex-row  justify-center md:items-start md:justify-start w-full items-center gap-5  md:h-[850px]">
-          {soartedTaksks.length === 0 ? (
+          {displayedTasks.length === 0 ? (
             <p>No transactions found</p>
           ) : (
-            soartedTaksks.map((data, id) => <Transaction key={id} {...data} />)
+            displayedTasks.map((data, id) => <Transaction key={id} {...data} />)
           )}
         </div>
       </main>

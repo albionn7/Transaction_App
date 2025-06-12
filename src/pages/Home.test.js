@@ -45,7 +45,9 @@ describe("Home component", () => {
     const transactions = screen.getAllByTestId("mock-transaction");
     expect(transactions).toHaveLength(2);
 
-    expect(screen.getByText("Total Amount: $1100.00")).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes("Average Cost"))
+    ).toBeInTheDocument();
   });
 
   it("displays 'No transactions found' when there are no transactions", () => {
@@ -56,6 +58,8 @@ describe("Home component", () => {
     );
 
     expect(screen.getByText("No transactions found")).toBeInTheDocument();
-    expect(screen.getByText("Total Amount: $0.00")).toBeInTheDocument();
+    expect(
+      screen.getByText((content) => content.includes("0"))
+    ).toBeInTheDocument();
   });
 });

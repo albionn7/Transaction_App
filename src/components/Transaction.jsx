@@ -20,7 +20,7 @@ export const Transaction = ({ title, category, id, value, createdAt }) => {
       <h2 className="flex text-xl pb-10  font-bold ">Title: {title}</h2>
       <div className="flex flex-wrap md:flex-col  items-start md:h-[250px] gap-4 ">
         <p className="text-lg text-center">Category: {category.name}</p>
-        <p className="text-lg text-center">Price: ${value}.00</p>
+        <p className="text-lg text-center">Price: ${parseFloat(value)}</p>
         <p className="text-lg text-start ">
           Date: {format(createdAt, "MMMM do, yyyy")}
         </p>
